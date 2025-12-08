@@ -1,0 +1,126 @@
+.signup-bg {
+  background: url("/main.png") center/cover no-repeat fixed;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+}
+
+/* Blur + dark overlay */
+.signup-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.signup-container {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  padding: 30px 35px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+  animation: fadeUp 0.8s ease-out;
+}
+
+/* Title */
+.signup-title {
+  text-align: center;
+  color: white;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+/* Error */
+.error-box {
+  background: rgba(255, 0, 0, 0.15);
+  color: white;
+  padding: 10px;
+  text-align: center;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  border: 1px solid rgba(255, 0, 0, 0.3);
+}
+
+/* Inputs */
+.signup-form .input-group {
+  margin-bottom: 18px;
+}
+
+.signup-form label {
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.signup-form input {
+  width: 100%;
+  padding: 12px 14px;
+  margin-top: 6px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  transition: 0.3s;
+}
+
+.signup-form input:focus {
+  border-color: white;
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.02);
+}
+
+/* Button */
+.signup-btn {
+  width: 100%;
+  padding: 14px;
+  font-size: 17px;
+  font-weight: 600;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.85);
+  color: #0e2c45;
+  transition: 0.3s;
+}
+
+.signup-btn:hover:not(:disabled) {
+  transform: scale(1.05);
+  background: white;
+}
+
+/* Bottom text */
+.bottom-text {
+  text-align: center;
+  margin-top: 20px;
+  color: white;
+  font-size: 14px;
+}
+
+.bottom-text a {
+  color: #fff;
+  text-decoration: underline;
+  margin-left: 4px;
+}
+
+/* fade animation */
+@keyframes fadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
