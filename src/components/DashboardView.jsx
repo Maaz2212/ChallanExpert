@@ -7,7 +7,7 @@ const DashboardView = ({ vehicleData, stats }) => {
   return (
     <div className="h-full">
       {/* Vehicle Stats Container */}
-      <div className="bg-linear-to-r from-indigo-100 via-purple-100 to-pink-100 shadow-xl rounded-xl p-6 w-full h-full">
+      <div className="bg-gradient-to-r from-indigo-100 via-purple-100 to-pink-100 shadow-xl rounded-xl p-6 w-full h-full">
         <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">
           Vehicle Challan Stats
         </h2>
