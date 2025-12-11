@@ -2,7 +2,7 @@ import { FileText, AlertTriangle, CheckCircle, IndianRupee } from "lucide-react"
 import StatCard from "./StatCard";
 
 const DashboardView = ({ vehicleData, stats }) => {
-  if (!vehicleData) return null; // render nothing until vehicle data exists
+  // if (!vehicleData) return null; // render nothing until vehicle data exists
 
   return (
     <div className="h-full">
