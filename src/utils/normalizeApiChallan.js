@@ -5,28 +5,42 @@ export const normalizeChallan = (raw, index = 0) => {
   if (!raw) return null;
 
   // ---- Normalize Status ----
-  let status = cleanStr(raw.payment_status || raw.status || raw.Status);
-  const sl = status.toLowerCase();
+  // Priority: User mentioned 'challanStatus' in the new API response
+  let statusRaw = cleanStr(raw.challanStatus || raw.payment_status || raw.status || raw.Status);
+  let courtRaw = cleanStr(raw.court_status || raw.court);
 
-  if (sl.includes("court")) {
-    status = "Pending"; // court-challans are not paid yet
-  } else if (sl === "1") {
-    status = "Paid";
-  } else if (sl === "0") {
-    status = "Unpaid";
-  } else if (sl.includes("disp") || sl.includes("closed")) {
-    status = "Disposed";
-  } else if (sl.includes("pending")) {
-    status = "Pending";
+  let status = "Pending"; // Default
+  let court = "N/A";
+
+  const sl = String(statusRaw).toLowerCase();
+  const cl = String(courtRaw).toLowerCase();
+
+  // Logic: "if court is 1 then its virtual court"
+  if (cl === "1" || sl.includes("virtual") || sl.includes("court")) {
+    court = "Virtual Court";
+    status = "Pending"; // Virtual court imply pending adjudication
   } else {
-    status = capitalizeWords(status || "Unknown");
-  }
+    // "if court is "" then challan status is either pending or paid or unpaid"
+    court = "N/A";
 
-  // ---- Normalize Court ----
-  let court = cleanStr(raw.court_status || raw.court);
-  if (!court || court === "0") court = "N/A";
-  else if (court === "1") court = "Court";
-  else court = capitalizeWords(court);
+    if (sl === "paid" || sl === "1") {
+      status = "Paid";
+    } else if (sl === "unpaid" || sl === "0") {
+      status = "Unpaid";
+    } else if (sl === "pending") {
+      status = "Pending";
+    } else if (sl.includes("disp") || sl.includes("closed")) {
+      status = "Disposed";
+    } else {
+      // Fallback/Heuristic
+      const amount = Number.parseFloat(raw.amount) || 0;
+      if (amount > 0) {
+        status = "Unpaid"; // Assume unpaid if amount exists but status unknown
+      } else {
+        status = capitalizeWords(statusRaw || "Unknown");
+      }
+    }
+  }
 
   // ---- Normalize Amount ----
   const amountNumber = Number.parseFloat(raw.amount) || 0;
@@ -39,9 +53,9 @@ export const normalizeChallan = (raw, index = 0) => {
     // API fields normalized
     challanNumber: raw.challanNumber || raw.challan_no || "N/A",
     accusedName: raw.accusedName || raw.name || "N/A",
-    fatherName: raw.fatherName || raw.father_name || "N/A",
+    fatherName: raw.accused_father_name || raw.father_name || "N/A", // Fixed mapping
     offenseDetails: raw.offenseDetails || raw.offence || raw.offense || "N/A",
-    place: raw.place || raw.location || "N/A",
+    place: raw.challanPlace || raw.place || raw.location || "N/A", // Fixed mapping priority
 
     // Dates
     challanDate: formattedDate,

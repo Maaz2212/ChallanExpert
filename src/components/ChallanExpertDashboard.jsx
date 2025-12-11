@@ -5,6 +5,9 @@ import { normalizeChallan } from "../utils/normalizeApiChallan";
 import { useSearchParams } from "react-router-dom";
 import SearchView from "./SearchView";
 import DashboardView from "./DashboardView";
+import ChallanTableView from "./ChallanTableView";
+import { formatDate } from "../utils/formatUtils";
+import { getStatusColor } from "../utils/getStatusColor";
 
 export default function ChallanExpertDashboard({ selectedTab }) {
   const [params] = useSearchParams();
@@ -86,7 +89,7 @@ export default function ChallanExpertDashboard({ selectedTab }) {
     }
   };
 
-  
+
 
   // -------- RENDER BASED ON TAB --------
   if (selectedTab === "home") return <h1 className="text-2xl font-bold">Home Page</h1>;
@@ -102,15 +105,34 @@ export default function ChallanExpertDashboard({ selectedTab }) {
         <div className="bg-red-100 text-red-700 p-3 rounded">{error}</div>
       )}
 
-      <SearchView
-        vehicleNo={vehicleNo}
-        setVehicleNo={setVehicleNo}
-        loading={loading}
-        handleSearch={() => handleSearch(vehicleNo)}
-        challans={challans}
-      />
+      {loading && (
+        <div className="bg-gray-100 text-gray-700 p-3 rounded">Loading...</div>
+      )}
 
-      <DashboardView vehicleData={vehicleData} stats={stats} />
+
+
+      <div className="flex flex-col lg:flex-row gap-6">
+        <div className="w-full lg:w-1/3">
+          <SearchView
+            vehicleNo={vehicleNo}
+            setVehicleNo={setVehicleNo}
+            loading={loading}
+            handleSearch={() => handleSearch(vehicleNo)}
+          />
+        </div>
+        <div className="w-full lg:w-2/3">
+          <DashboardView vehicleData={vehicleData} stats={stats} />
+        </div>
+      </div>
+
+      {(challans.length > 0 || loading) && (
+        <ChallanTableView
+          challans={challans}
+          formatDate={formatDate}
+          getStatusColor={getStatusColor}
+          vehicleNo={vehicleNo}
+        />
+      )}
     </div>
   );
 }

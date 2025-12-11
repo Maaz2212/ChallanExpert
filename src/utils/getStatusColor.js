@@ -13,7 +13,7 @@ export const getStatusColor = (status = "") => {
 };
 
 export const capitalizeWords = (s = "") =>
-  s.replace(/\b\w/g, (m) => m.toUpperCase());
+  String(s).replace(/\b\w/g, (m) => m.toUpperCase());
 
 export const cleanStr = (v) => {
   if (!v) return "";

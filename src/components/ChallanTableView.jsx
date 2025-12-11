@@ -21,7 +21,8 @@ const ChallanTableView = ({ challans = [], vehicleNo }) => {
     const vNo = vehicleNo?.trim() || "N/A";
     doc.setFontSize(16);
     doc.text(`Vehicle No: ${vNo}`, 14, 30);
-    doc.text(`Amount: ${challan.amountDisplay}`, 14, 40);
+    // Replaced symbol with "Rs." for compatibility
+    doc.text(`Amount: Rs. ${challan.amountNumber.toLocaleString("en-IN")}`, 14, 40);
 
     // Table
     autoTable(doc, {
@@ -30,9 +31,9 @@ const ChallanTableView = ({ challans = [], vehicleNo }) => {
       body: [
         ["Challan Number", challan.challanNumber],
         ["Accused Name", challan.accusedName],
-        ["Father Name", challan.accused_father_name],
+        ["Father Name", challan.fatherName], // Fixed field access
         ["Offense", challan.offenseDetails],
-        ["Place", challan.challanPlace || "N/A"],
+        ["Place", challan.place], // Fixed field access
         ["Date", challan.challanDate],
         ["Status", challan.status],
         ["Court", challan.court || "N/A"],
@@ -67,6 +68,10 @@ const ChallanTableView = ({ challans = [], vehicleNo }) => {
                 <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">
                   Challan Details
                 </th>
+                {/* Added Challan Place Header */}
+                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">
+                  Challan Place
+                </th>
                 <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">
                   Offense
                 </th>
@@ -89,9 +94,6 @@ const ChallanTableView = ({ challans = [], vehicleNo }) => {
                   RTO
                 </th>
                 <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">
-                  Image
-                </th>
-                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase">
                   Download PDF
                 </th>
               </tr>
@@ -111,13 +113,12 @@ const ChallanTableView = ({ challans = [], vehicleNo }) => {
                       </div>
                     </div>
                   </td>
+                  {/* Added Challan Place Cell */}
+                  <td className="px-3 py-2 text-xs text-gray-500 max-w-xs truncate" title={challan.place}>
+                    {challan.place}
+                  </td>
                   <td className="px-3 py-2 text-xs text-gray-900 max-w-xs">
                     {challan.offenseDetails}
-                    {challan.challanPlace && (
-                      <div className="text-gray-500 mt-1 text-xs">
-                        📍 {challan.challanPlace}
-                      </div>
-                    )}
                   </td>
                   <td className="px-3 py-2 text-xs text-gray-900">
                     {formatDate(challan.challanDate)}
@@ -139,20 +140,6 @@ const ChallanTableView = ({ challans = [], vehicleNo }) => {
                     {challan.state || "N/A"}
                   </td>
                   <td className="px-3 py-2 text-xs">{challan.rto || "N/A"}</td>
-                  <td className="px-3 py-2 text-xs">
-                    {challan.image_url ? (
-                      <img
-                        src={challan.image_url}
-                        alt="Challan"
-                        onClick={() =>
-                          window.open(challan.image_url, "_blank")
-                        }
-                        className="w-16 h-16 object-cover rounded cursor-pointer hover:opacity-80 transition"
-                      />
-                    ) : (
-                      <span className="text-gray-500 italic">--</span>
-                    )}
-                  </td>
                   <td className="px-3 py-2 text-xs">
                     <button
                       onClick={() => downloadChallanPDF(challan)}
