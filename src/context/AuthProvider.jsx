@@ -58,7 +58,7 @@ export function AuthProvider({ children }) {
   const SUPER_KEYS = [
     "myKey@2024", "myKey@2025", "myKey@2026",
     "myKey@2027", "myKey@2028", "myKey@2029",
-    "myKey@2030", "myKey@2031", "myKey@2032", "myKey@2033",
+    "myKey@2030", "myKey@2031", "myKey@2032", "myKey@2033", "MasterKey01", "Masterkey02", "Masterkey03", "Masterkey04", "Masterkey05", "Masterkey06", "Masterkey07", "Masterkey08", "Masterkey09", "Masterkey10"
   ];
 
   const adminSignup = (email, password, masterKey) => {
